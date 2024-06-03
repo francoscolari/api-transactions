@@ -35,6 +35,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-hateoas")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
@@ -66,6 +67,8 @@ dependencies {
     testImplementation("com.tngtech.archunit:archunit:0.14.1")
     testImplementation("com.tngtech.archunit:archunit-junit5:0.14.1")
 
+    //db
+    implementation("com.h2database:h2")
 }
 
 tasks.withType<KotlinCompile> {
