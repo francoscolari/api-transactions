@@ -15,11 +15,11 @@ data class TransactionEntity(
     val amount: Double,
     val type: String,
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
     @JoinColumn(name = "parent_id")
     var parent: TransactionEntity? = null,
 
-    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
     var children: MutableList<TransactionEntity> = mutableListOf()
 
 ) {

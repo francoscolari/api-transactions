@@ -7,12 +7,14 @@ import com.mendel.api.transactions.domain.Transaction
 import com.mendel.api.transactions.shared.log.CompanionLogger
 import com.mendel.api.transactions.shared.log.benchmark
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 
 @Component
 class TransactionsRepository(
     private val transactionsDbRepository: TransactionsDbRepository
 ) : TransactionsOutPort {
 
+    @Transactional
     override fun createOrUpdate(transaction: Transaction): Transaction =
         log.benchmark("find by type") {
             transactionsDbRepository.save(transaction.toTransactionEntity()).toTransaction()

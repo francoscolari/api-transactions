@@ -8,10 +8,5 @@ fun PreTransaction.toTransaction(parentTransaction: Transaction?): Transaction =
         id = id,
         type = type,
         amount = amount,
-        parent = parentTransaction?.let {
-            Transaction(
-                id = it.id, type = it.type,
-                amount = it.amount
-            )
-        }
+        parent = parentTransaction
     )
