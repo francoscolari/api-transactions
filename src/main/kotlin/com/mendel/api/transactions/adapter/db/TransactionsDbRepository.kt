@@ -1,4 +1,4 @@
-package com.mendel.api.transactions.adapter.db.read
+package com.mendel.api.transactions.adapter.db
 
 import com.mendel.api.transactions.adapter.db.model.TransactionEntity
 import org.springframework.data.jpa.repository.JpaRepository

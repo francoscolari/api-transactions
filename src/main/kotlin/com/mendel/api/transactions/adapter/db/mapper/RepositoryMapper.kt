@@ -1,5 +1,6 @@
 package com.mendel.api.transactions.adapter.db.mapper
 
+import com.mendel.api.transactions.adapter.db.TransactionsRepository.Companion.log
 import com.mendel.api.transactions.adapter.db.model.TransactionEntity
 import com.mendel.api.transactions.domain.Transaction
 
@@ -31,3 +32,16 @@ fun TransactionEntity.toTransaction(): Transaction =
             )
         },
     )
+
+fun Transaction.toTransactionEntity(): TransactionEntity =
+    TransactionEntity(
+        id = id,
+        amount = amount,
+        type = type,
+        parent = parent?.let {
+            TransactionEntity(
+                id = it.id,
+                type = it.type,
+                amount = it.amount
+            )
+        }).log { info("model txs save: {}", it) }
