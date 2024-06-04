@@ -15,7 +15,7 @@ class TransactionsRepository(
 ) : TransactionsOutPort {
 
     @Transactional
-    override fun createOrUpdate(transaction: Transaction): Transaction =
+    override fun save(transaction: Transaction): Transaction =
         log.benchmark("find by type") {
             transactionsDbRepository.save(transaction.toTransactionEntity()).toTransaction()
                 .log { info("save response: {}", it) }

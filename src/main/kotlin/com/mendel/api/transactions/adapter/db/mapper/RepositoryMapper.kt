@@ -28,4 +28,5 @@ fun Transaction.toTransactionEntity(): TransactionEntity =
         type = type,
         parent = parent?.let {
             it.toTransactionEntity()
-        })
+        }
+    )

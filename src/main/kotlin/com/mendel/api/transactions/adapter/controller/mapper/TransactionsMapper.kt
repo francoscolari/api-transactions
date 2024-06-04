@@ -12,7 +12,7 @@ fun TransactionsRequest.toPreTransactions(transactionId: Long): PreTransaction =
         id = transactionId,
         type = type,
         amount = amount,
-        parentId= parentId
+        parentId = parentId
     )
 
-fun Long.toTransactionResponse(): TransactionResponse = TransactionResponse(id = this)
+fun Long.toTransactionResponse(): TransactionResponse = TransactionResponse()

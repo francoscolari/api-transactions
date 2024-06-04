@@ -1,7 +1,7 @@
 package com.mendel.api.transactions.adapter.db.config
 
-import com.mendel.api.transactions.adapter.db.model.TransactionEntity
 import com.mendel.api.transactions.adapter.db.TransactionsDbRepository
+import com.mendel.api.transactions.adapter.db.model.TransactionEntity
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

@@ -29,7 +29,7 @@ class TransactionsController(
         @PathVariable transactionId: Long,
         @Valid @RequestBody request: TransactionsRequest
     ) = log.benchmark("transactions: put") {
-        transactionsInPort.createOrUpdate(request.toPreTransactions(transactionId)).toTransactionResponse()
+        transactionsInPort.save(request.toPreTransactions(transactionId)).toTransactionResponse()
             .log { info("put transactions response: {}", it) }
     }
 

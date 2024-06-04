@@ -12,9 +12,9 @@ class TransactionsUseCase(
     private val transactionsOutPort: TransactionsOutPort,
 ) : TransactionsInPort {
 
-    override fun createOrUpdate(preTransaction: PreTransaction): Long {
+    override fun save(preTransaction: PreTransaction): Long {
         val parentTransaction = preTransaction.parentId?.let { transactionsOutPort.findById(it) }
-        return transactionsOutPort.createOrUpdate(preTransaction.toTransaction(parentTransaction)).id
+        return transactionsOutPort.save(preTransaction.toTransaction(parentTransaction)).id
     }
 
     override fun find(type: String): List<Long> = transactionsOutPort.findByType(type).map { it.id }
