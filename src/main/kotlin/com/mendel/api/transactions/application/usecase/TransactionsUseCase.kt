@@ -1,6 +1,5 @@
 package com.mendel.api.transactions.application.usecase
 
-import com.mendel.api.transactions.adapter.db.model.TransactionEntity
 import com.mendel.api.transactions.application.port.`in`.TransactionsInPort
 import com.mendel.api.transactions.application.port.out.TransactionsOutPort
 import com.mendel.api.transactions.domain.Transaction
@@ -23,5 +22,3 @@ class TransactionsUseCase(
         return sum
     }
 }
-
-

@@ -1,7 +1,6 @@
 package com.mendel.api.transactions.adapter.db.read
 
 import com.mendel.api.transactions.adapter.db.mapper.toTransaction
-import com.mendel.api.transactions.adapter.db.model.TransactionEntity
 import com.mendel.api.transactions.application.port.out.TransactionsOutPort
 import com.mendel.api.transactions.domain.Transaction
 import com.mendel.api.transactions.shared.log.CompanionLogger

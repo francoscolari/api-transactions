@@ -1,6 +1,5 @@
 package com.mendel.api.transactions.domain
 
-
 data class Transaction(
     val id: Long,
     val amount: Double,

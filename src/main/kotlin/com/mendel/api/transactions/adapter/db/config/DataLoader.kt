@@ -13,20 +13,19 @@ class DataLoader {
     fun loadData(transactionsDbRepository: TransactionsDbRepository): CommandLineRunner {
         return CommandLineRunner {
             val transactions = listOf(
-                TransactionEntity(id = 1, amount = 100.00, type = "cars"),
+                TransactionEntity(id = 10, amount = 5000.0, type = "cars"),
                 TransactionEntity(
-                    id = 2,
-                    amount = 200.00,
-                    type = "cars",
-                    parent = TransactionEntity(id = 1, amount = 100.00, type = "cars")
+                    id = 11,
+                    amount = 10000.0,
+                    type = "shopping",
+                    parent = TransactionEntity(id = 10, amount = 5000.0, type = "cars")
                 ),
                 TransactionEntity(
-                    id = 3,
-                    amount = 300.00,
-                    type = "bikes",
-                    parent = TransactionEntity(id = 2, amount = 200.00, type = "cars")
+                    id = 12,
+                    amount = 5000.00,
+                    type = "shopping",
+                    parent = TransactionEntity(id = 11, amount = 10000.0, type = "shopping")
                 ),
-                TransactionEntity(id = 4, amount = 300.00, type = "bikes")
             )
 
             transactionsDbRepository.saveAll(transactions)
