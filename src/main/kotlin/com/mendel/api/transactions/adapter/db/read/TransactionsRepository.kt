@@ -1,6 +1,7 @@
 package com.mendel.api.transactions.adapter.db.read
 
 import com.mendel.api.transactions.adapter.db.mapper.toTransaction
+import com.mendel.api.transactions.adapter.db.model.TransactionEntity
 import com.mendel.api.transactions.application.port.out.TransactionsOutPort
 import com.mendel.api.transactions.domain.Transaction
 import com.mendel.api.transactions.shared.log.CompanionLogger
@@ -16,6 +17,11 @@ class TransactionsRepository(
             transactionsDbRepository.findByType(type).map {
                 it.toTransaction()
             }
+        }
+
+    override fun findById(transactionId: Long): Transaction =
+        log.benchmark("find by id") {
+            transactionsDbRepository.findById(transactionId).orElseThrow().toTransaction()
         }
 
     companion object : CompanionLogger()

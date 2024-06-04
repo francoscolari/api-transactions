@@ -8,5 +8,26 @@ fun TransactionEntity.toTransaction(): Transaction =
         id = id,
         amount = amount,
         type = type,
-        parentId = parentId,
+        parent = parent?.toTransaction(),
+        children = children.map { transactionEntity ->
+            Transaction(
+                id = transactionEntity.id,
+                amount = transactionEntity.amount,
+                type = transactionEntity.type,
+                parent = transactionEntity.parent?.let { parentEntity ->
+                    Transaction(
+                        id = parentEntity.id,
+                        amount = parentEntity.amount,
+                        type = parentEntity.type
+                    )
+                },
+                children = transactionEntity.children.map { childEntity ->
+                    Transaction(
+                        id = childEntity.id,
+                        amount = childEntity.amount,
+                        type = childEntity.type
+                    )
+                }.toMutableList()
+            )
+        },
     )
