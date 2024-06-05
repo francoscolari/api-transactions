@@ -4,14 +4,12 @@ import com.mendel.api.transactions.TestConstants.Companion.TRANSACTION_ID
 import com.mendel.api.transactions.TestConstants.Companion.TYPE
 import com.mendel.api.transactions.aTransactionsRequest
 import com.mendel.api.transactions.aTransactionsSumResponse
-import com.mendel.api.transactions.adapter.controller.TransactionsController
 import com.mendel.api.transactions.adapter.controller.mapper.toPreTransactions
 import com.mendel.api.transactions.adapter.controller.mapper.toTransactionResponse
 import com.mendel.api.transactions.application.port.`in`.TransactionsInPort
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FeatureSpec
 import io.kotest.matchers.shouldBe
-import io.mockk.Runs
 import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk

@@ -1,17 +1,10 @@
 package com.mendel.api.transactions.application
 
-import com.mendel.api.transactions.TestConstants
 import com.mendel.api.transactions.TestConstants.Companion.TRANSACTION_ID
 import com.mendel.api.transactions.TestConstants.Companion.TYPE
 import com.mendel.api.transactions.aPreTransaction
 import com.mendel.api.transactions.aPreTransactionParent
 import com.mendel.api.transactions.aTransaction
-import com.mendel.api.transactions.aTransactionsRequest
-import com.mendel.api.transactions.aTransactionsSumResponse
-import com.mendel.api.transactions.adapter.controller.TransactionsController
-import com.mendel.api.transactions.adapter.controller.mapper.toPreTransactions
-import com.mendel.api.transactions.adapter.controller.mapper.toTransactionResponse
-import com.mendel.api.transactions.application.port.`in`.TransactionsInPort
 import com.mendel.api.transactions.application.port.out.TransactionsOutPort
 import com.mendel.api.transactions.application.usecase.TransactionsUseCase
 import com.mendel.api.transactions.domain.mapper.toTransaction
@@ -23,7 +16,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 
-class TransactionUseCaseSpec  : FeatureSpec({
+class TransactionUseCaseSpec : FeatureSpec({
 
     val transactionsOutPort = mockk<TransactionsOutPort>()
     val useCase = TransactionsUseCase(transactionsOutPort)

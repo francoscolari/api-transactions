@@ -2,15 +2,10 @@ package com.mendel.api.transactions.adapter.db
 
 import com.mendel.api.transactions.TestConstants
 import com.mendel.api.transactions.TestConstants.Companion.TRANSACTION_ID
-import com.mendel.api.transactions.aPreTransaction
-import com.mendel.api.transactions.aPreTransactionParent
 import com.mendel.api.transactions.aTransaction
 import com.mendel.api.transactions.aTransactionEntity
 import com.mendel.api.transactions.adapter.db.mapper.toTransactionEntity
 import com.mendel.api.transactions.adapter.db.model.TransactionEntity
-import com.mendel.api.transactions.application.port.out.TransactionsOutPort
-import com.mendel.api.transactions.application.usecase.TransactionsUseCase
-import com.mendel.api.transactions.domain.mapper.toTransaction
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FeatureSpec
 import io.kotest.matchers.shouldBe
@@ -18,7 +13,7 @@ import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import java.util.*
+import java.util.Optional
 import kotlin.NoSuchElementException
 
 class TransactionsRepositorySpec : FeatureSpec({

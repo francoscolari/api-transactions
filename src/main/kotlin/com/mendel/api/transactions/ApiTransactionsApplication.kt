@@ -6,8 +6,8 @@ import org.springframework.boot.runApplication
 
 @ConfigurationPropertiesScan("com.mendel")
 @SpringBootApplication(scanBasePackages = ["com.mendel"])
-class ApiNotificationsApplication
+class ApiTransactionsApplication
 
 fun main(args: Array<String>) {
-    runApplication<ApiNotificationsApplication>(*args)
+    runApplication<ApiTransactionsApplication>(*args)
 }

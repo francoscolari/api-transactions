@@ -10,7 +10,6 @@ import com.mendel.api.transactions.domain.PreTransaction
 import com.mendel.api.transactions.domain.Transaction
 import com.mendel.api.transactions.shared.error.ErrorHandler
 import com.mendel.api.transactions.shared.error.provider.ErrorResponseProvider
-import javax.servlet.http.HttpServletRequest
 
 fun aTransactionsRequest() = TransactionsRequest(
     amount = 10.0,
