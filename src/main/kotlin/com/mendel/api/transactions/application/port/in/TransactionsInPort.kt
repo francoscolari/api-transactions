@@ -5,5 +5,5 @@ import com.mendel.api.transactions.domain.PreTransaction
 interface TransactionsInPort {
     fun save(preTransaction: PreTransaction): Long
     fun find(type: String): List<Long>
-    fun sum(id: Long): Double
+    fun sum(transactionId: Long): Double
 }
