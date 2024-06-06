@@ -1,11 +1,11 @@
-package com.mendel.api.transactions.adapter.db
+package com.mendel.api.transactions.adapter.cache
 
 import com.mendel.api.transactions.TestConstants
 import com.mendel.api.transactions.TestConstants.Companion.TRANSACTION_ID
 import com.mendel.api.transactions.aTransaction
 import com.mendel.api.transactions.aTransactionEntity
-import com.mendel.api.transactions.adapter.db.mapper.toTransactionEntity
-import com.mendel.api.transactions.adapter.db.model.TransactionEntity
+import com.mendel.api.transactions.adapter.cache.mapper.toTransactionEntity
+import com.mendel.api.transactions.adapter.cache.model.TransactionEntity
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FeatureSpec
 import io.kotest.matchers.shouldBe
@@ -13,13 +13,12 @@ import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import java.util.Optional
 import kotlin.NoSuchElementException
 
 class TransactionsRepositorySpec : FeatureSpec({
 
-    val transactionsDbRepository = mockk<TransactionsDbRepository>()
-    val repository = TransactionsRepository(transactionsDbRepository)
+    val cache = mockk<InMemoryRepository>()
+    val repository = TransactionsRepository(cache)
 
     beforeEach { clearAllMocks() }
 
@@ -28,13 +27,13 @@ class TransactionsRepositorySpec : FeatureSpec({
             val type = TestConstants.TYPE
             val response = listOf(aTransaction())
             every {
-                transactionsDbRepository.findByType(type)
+                cache.findByType(type)
             } returns listOf(aTransactionEntity())
 
             repository.findByType(type) shouldBe response
 
             verify(exactly = 1) {
-                transactionsDbRepository.findByType(type)
+                cache.findByType(type)
             }
         }
 
@@ -42,7 +41,7 @@ class TransactionsRepositorySpec : FeatureSpec({
             val type = TestConstants.TYPE
 
             every {
-                transactionsDbRepository.findByType(type)
+                cache.findByType(type)
             } throws NoSuchElementException()
 
             shouldThrow<NoSuchElementException> {
@@ -50,38 +49,38 @@ class TransactionsRepositorySpec : FeatureSpec({
             }
 
             verify(exactly = 1) {
-                transactionsDbRepository.findByType(type)
+                cache.findByType(type)
             }
         }
     }
 
     feature("findById transactions") {
         scenario("should return success") {
-            val optionalTransactionEntity: Optional<TransactionEntity> = Optional.of(aTransactionEntity())
+            val transactionEntity: TransactionEntity = aTransactionEntity()
 
             every {
-                transactionsDbRepository.findById(TRANSACTION_ID)
-            } returns optionalTransactionEntity
+                cache.findById(TRANSACTION_ID)
+            } returns listOf(transactionEntity)
 
-            repository.findById(TRANSACTION_ID) shouldBe aTransaction()
+            repository.findById(TRANSACTION_ID) shouldBe listOf(aTransaction())
 
             verify(exactly = 1) {
-                transactionsDbRepository.findById(TRANSACTION_ID)
+                cache.findById(TRANSACTION_ID)
             }
         }
 
         scenario("should return error") {
 
             every {
-                transactionsDbRepository.findById(TRANSACTION_ID)
-            } returns Optional.empty()
+                cache.findById(TRANSACTION_ID)
+            } returns null
 
             shouldThrow<NoSuchElementException> {
                 repository.findById(TRANSACTION_ID)
             }
 
             verify(exactly = 1) {
-                transactionsDbRepository.findById(TRANSACTION_ID)
+                cache.findById(TRANSACTION_ID)
             }
         }
     }
@@ -92,13 +91,13 @@ class TransactionsRepositorySpec : FeatureSpec({
             val transactionEntity = transaction.toTransactionEntity()
 
             every {
-                transactionsDbRepository.save(transactionEntity)
+                cache.set(transaction.id, transactionEntity)
             } returns transactionEntity
 
             repository.save(transaction) shouldBe transaction
 
             verify(exactly = 1) {
-                transactionsDbRepository.save(transaction.toTransactionEntity())
+                cache.set(transaction.id, transactionEntity)
             }
         }
 
@@ -107,7 +106,7 @@ class TransactionsRepositorySpec : FeatureSpec({
             val transactionEntity = transaction.toTransactionEntity()
 
             every {
-                transactionsDbRepository.save(transactionEntity)
+                cache.set(transaction.id, transactionEntity)
             } throws NoSuchElementException()
 
             shouldThrow<NoSuchElementException> {
@@ -115,7 +114,7 @@ class TransactionsRepositorySpec : FeatureSpec({
             }
 
             verify(exactly = 1) {
-                transactionsDbRepository.save(transactionEntity)
+                cache.set(transaction.id, transactionEntity)
             }
         }
     }

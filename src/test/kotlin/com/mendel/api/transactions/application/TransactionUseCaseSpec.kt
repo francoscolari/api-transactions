@@ -3,7 +3,6 @@ package com.mendel.api.transactions.application
 import com.mendel.api.transactions.TestConstants.Companion.TRANSACTION_ID
 import com.mendel.api.transactions.TestConstants.Companion.TYPE
 import com.mendel.api.transactions.aPreTransaction
-import com.mendel.api.transactions.aPreTransactionParent
 import com.mendel.api.transactions.aTransaction
 import com.mendel.api.transactions.application.port.out.TransactionsOutPort
 import com.mendel.api.transactions.application.usecase.TransactionsUseCase
@@ -60,7 +59,7 @@ class TransactionUseCaseSpec : FeatureSpec({
 
             every {
                 transactionsOutPort.findById(TRANSACTION_ID)
-            } returns aTransaction()
+            } returns listOf(aTransaction())
 
             useCase.sum(TRANSACTION_ID) shouldBe 200000.0
 
@@ -88,30 +87,10 @@ class TransactionUseCaseSpec : FeatureSpec({
         scenario("should return success without parent") {
 
             val preTransaction = aPreTransaction()
-            val transaction = preTransaction.toTransaction(null)
+            val transaction = preTransaction.toTransaction()
 
             every {
                 transactionsOutPort.save(transaction)
-            } returns aTransaction()
-
-            useCase.save(preTransaction) shouldBe TRANSACTION_ID
-
-            verify(exactly = 1) {
-                transactionsOutPort.save(transaction)
-            }
-        }
-
-        scenario("should return success parent") {
-
-            val preTransaction = aPreTransactionParent()
-            val transaction = preTransaction.toTransaction(aTransaction())
-
-            every {
-                transactionsOutPort.save(transaction)
-            } returns aTransaction()
-
-            every {
-                transactionsOutPort.findById(any())
             } returns aTransaction()
 
             useCase.save(preTransaction) shouldBe TRANSACTION_ID
@@ -123,7 +102,7 @@ class TransactionUseCaseSpec : FeatureSpec({
 
         scenario("should return error") {
             val preTransaction = aPreTransaction()
-            val transaction = preTransaction.toTransaction(null)
+            val transaction = preTransaction.toTransaction()
 
             every {
                 transactionsOutPort.save(transaction)

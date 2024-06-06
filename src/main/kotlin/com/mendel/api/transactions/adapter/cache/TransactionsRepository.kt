@@ -1,7 +1,7 @@
-package com.mendel.api.transactions.adapter.db
+package com.mendel.api.transactions.adapter.cache
 
-import com.mendel.api.transactions.adapter.db.mapper.toTransaction
-import com.mendel.api.transactions.adapter.db.mapper.toTransactionEntity
+import com.mendel.api.transactions.adapter.cache.mapper.toTransaction
+import com.mendel.api.transactions.adapter.cache.mapper.toTransactionEntity
 import com.mendel.api.transactions.application.port.out.TransactionsOutPort
 import com.mendel.api.transactions.domain.Transaction
 import com.mendel.api.transactions.shared.log.CompanionLogger
@@ -11,27 +11,31 @@ import org.springframework.transaction.annotation.Transactional
 
 @Component
 class TransactionsRepository(
-    private val transactionsDbRepository: TransactionsDbRepository
+    private val cache: InMemoryRepository
 ) : TransactionsOutPort {
 
     @Transactional
     override fun save(transaction: Transaction): Transaction =
         log.benchmark("find by type") {
-            transactionsDbRepository.save(transaction.toTransactionEntity()).toTransaction()
+            cache.set(transaction.id, transaction.toTransactionEntity()).toTransaction()
                 .log { info("save response: {}", it) }
         }
 
     override fun findByType(type: String): List<Transaction> =
         log.benchmark("find by type") {
-            transactionsDbRepository.findByType(type).map {
+            cache.findByType(type).map {
                 it.toTransaction()
             }.log { info("find by type response: {}", it) }
         }
 
-    override fun findById(transactionId: Long): Transaction =
+    override fun findById(transactionId: Long): List<Transaction> =
         log.benchmark("find by id") {
-            transactionsDbRepository.findById(transactionId).orElseThrow().toTransaction()
-                .log { info("find by id response: {}", it) }
+            val transactionlist = cache.findById(transactionId)
+            if (transactionlist != null) {
+                return transactionlist.map { it.toTransaction() }
+            } else {
+                throw NoSuchElementException("No such element found")
+            }
         }
 
     companion object : CompanionLogger()
