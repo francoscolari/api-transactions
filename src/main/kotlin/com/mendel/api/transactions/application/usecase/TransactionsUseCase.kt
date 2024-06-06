@@ -13,8 +13,7 @@ class TransactionsUseCase(
 ) : TransactionsInPort {
 
     override fun save(preTransaction: PreTransaction): Long {
-        val parentTransaction = preTransaction.parentId?.let { transactionsOutPort.findById(it) }
-        return transactionsOutPort.save(preTransaction.toTransaction(parentTransaction)).id
+        return transactionsOutPort.save(preTransaction.toTransaction()).id
     }
 
     override fun find(type: String): List<Long> = transactionsOutPort.findByType(type).map { it.id }
@@ -22,11 +21,7 @@ class TransactionsUseCase(
     override fun sum(transactionId: Long): Double =
         transactionsOutPort.findById(transactionId).calculateSum()
 
-    private fun Transaction.calculateSum(): Double {
-        var sum = this.amount
-        if (!this.children.isNullOrEmpty()) {
-            sum += this.children.sumOf { it.calculateSum() }
-        }
-        return sum
+    private fun List<Transaction>.calculateSum(): Double {
+        return this.sumOf { it.amount }
     }
 }

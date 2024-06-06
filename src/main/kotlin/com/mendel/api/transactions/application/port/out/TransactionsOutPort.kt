@@ -5,5 +5,5 @@ import com.mendel.api.transactions.domain.Transaction
 interface TransactionsOutPort {
     fun save(transaction: Transaction): Transaction
     fun findByType(type: String): List<Transaction>
-    fun findById(transactionId: Long): Transaction
+    fun findById(transactionId: Long): List<Transaction>
 }
